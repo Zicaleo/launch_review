@@ -46,6 +46,7 @@ public class LaunchReviewPlugin implements MethodCallHandler, FlutterPlugin, Act
     public void onMethodCall(MethodCall call, Result result) {
         if (call.method.equals("launch")) {
             String appId = call.argument("android_id");
+            boolean writeReview = call.argument("write_review");
 
             if (appId == null) {
                 appId = activity.getPackageName();
@@ -78,7 +79,9 @@ public class LaunchReviewPlugin implements MethodCallHandler, FlutterPlugin, Act
                     // this make sure only the Google Play app is allowed to
                     // intercept the intent
                     rateIntent.setComponent(componentName);
-                    Toast.makeText(activity, "Please Rate Application", Toast.LENGTH_SHORT).show();
+                    if(writeReview) {
+                        Toast.makeText(activity, "Please Rate Application", Toast.LENGTH_SHORT).show();
+                    }
 
                     activity.startActivity(rateIntent);
                     marketFound = true;
